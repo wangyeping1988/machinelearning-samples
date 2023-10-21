@@ -13,6 +13,7 @@ using Microsoft.Extensions.ML;
 using Microsoft.ML;
 using Serilog;
 using System;
+using Microsoft.AspNetCore.Mvc;
 
 namespace eShopDashboard
 {
@@ -50,19 +51,18 @@ namespace eShopDashboard
 
             services.Configure<CatalogSettings>(Configuration.GetSection("CatalogSettings"));
 
-            services.AddMvc();
+            services.AddMvc((MvcOptions options) => options.EnableEndpointRouting = false);
 
             services.Configure<AppSettings>(Configuration);
 
             services.AddSwaggerGen(options =>
             {
-                options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
+                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo()
                 {
                     Title = "eShopDashboard - API",
                     Version = "v1",
                     Description = "Web Dashboard REST HTTP API.",
-                    TermsOfService = "Terms Of Service"
+                    TermsOfService = new Uri("Terms Of Service")
                 });
             });
 
